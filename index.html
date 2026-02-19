@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Makalah HOME - GSKI Rehobot Surabaya</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <img src="asset/home.jpeg" alt="Logo HOME" style="width: 64px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                <div>
+                    <h1 class="header-title">Generator Makalah HOME</h1>
+                    <p class="header-subtitle">Home GSKI Rehobot Surabaya</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <div class="form-section">
+                <div class="tabs">
+                    <button class="tab-button active" id="tab-ai" onclick="switchTab('ai')">
+                        🤖 Input Data Gemini
+                    </button>
+                    <button class="tab-button" id="tab-manual" onclick="switchTab('manual')">
+                        ✏️ Edit & Preview
+                    </button>
+                </div>
+
+                <div class="tab-content active" id="content-ai">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="9" y1="3" x2="9" y2="21"></line>
+                            </svg>
+                            Paste Teks JSON dari Gemini
+                        </h2>
+                        
+                        <div class="ai-info">
+                            <p>✨ <strong>Cara Menggunakan:</strong></p>
+                            <ol>
+                                <li>Beri URL YouTube ke Gemini Gem.</li>
+                                <li>Copy seluruh teks (blok kode JSON) yang diberikan Gemini.</li>
+                                <li>Paste di kotak di bawah ini.</li>
+                                <li>Klik "Load Data ke Form".</li>
+                            </ol>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Teks JSON Gemini</label>
+                            <textarea 
+                                id="full-text-input" 
+                                class="form-textarea" 
+                                rows="15" 
+                                placeholder='Paste JSON di sini...
+
+Contoh:
+{
+  "minggu": "3",
+  "tanggal": "15 Februari 2026",
+  "seri": "SERIAL MONOTEISME ALKITABIAH",
+  "judul": "Imago Christi: Menjadi Serupa dengan Kristus",
+  ...
+}'></textarea>
+                        </div>
+
+                        <button type="button" class="btn-ai-parse" id="btn-parse-ai" onclick="parseWithAI()">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                                <polyline points="7 10 12 15 17 10"></polyline>
+                                <line x1="12" y1="15" x2="12" y2="3"></line>
+                            </svg>
+                            Load Data ke Form
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="content-manual">
+                    <div class="card">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            Informasi Dasar
+                        </h2>
+                        
+                        <div class="form-grid">
+                            <div>
+                                <label class="form-label">Minggu ke-</label>
+                                <input type="text" id="minggu" class="form-input" value="1">
+                            </div>
+                            <div>
+                                <label class="form-label">Tanggal</label>
+                                <input type="text" id="tanggal" class="form-input" value="15 Februari 2026">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Nama Seri</label>
+                            <input type="text" id="seri" class="form-input" value="SERIAL MONOTEISME ALKITABIAH">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Judul Makalah</label>
+                            <input type="text" id="judul" class="form-input" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Subjudul</label>
+                            <input type="text" id="subjudul" class="form-input" value="">
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Pendahuluan</label>
+                            <textarea id="pendahuluan" class="form-textarea" rows="6" placeholder="Tuliskan pendahuluan makalah..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2 class="card-title">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                            </svg>
+                            Editor Pembahasan
+                        </h2>
+
+                        <div id="sections-editor-container"></div>
+
+                        <button type="button" class="btn-add-section" onclick="addNewSection()" style="margin-top: 20px;">
+                            <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Tambah Bagian Baru
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h2 class="card-title">Penutup</h2>
+                        <textarea id="penutup" class="form-textarea" rows="6" placeholder="Tuliskan penutup makalah..."></textarea>
+                    </div>
+                </div>
+
+                <button type="button" class="btn-generate" onclick="generatePDF()">
+                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Generate & Download PDF
+                </button>
+            </div>
+
+            <div class="preview-section">
+                <div class="card preview-card">
+                    <h2 class="card-title">Preview Makalah</h2>
+                    
+                    <div id="preview-content" class="preview-scroll">
+                        <div class="preview-cover">
+                            <img src="asset/home.jpeg" alt="Logo HOME" style="width: 64px; border-radius: 12px; object-fit: cover; box-shadow: 0 4px 8px rgba(0,0,0,0.2);">
+                            <h3 class="preview-cover-title">HOME PLUS</h3>
+                            <p class="preview-cover-subtitle">GSKI REHOBOT SURABAYA</p>
+                            <div class="preview-cover-date">
+                                <span id="preview-minggu">Minggu 1</span> - <span id="preview-tanggal">15 Februari 2026</span>
+                            </div>
+                        </div>
+
+                        <div id="preview-seri" class="preview-seri"></div>
+                        <h1 id="preview-judul" class="preview-judul"></h1>
+                        <p id="preview-subjudul" class="preview-subjudul"></p>
+
+                        <div id="preview-pendahuluan-section" class="preview-pendahuluan" style="display: none;">
+                            <h4 class="preview-section-label">Pendahuluan:</h4>
+                            <p id="preview-pendahuluan"></p>
+                        </div>
+
+                        <div id="preview-sections"></div>
+
+                        <div id="preview-penutup-section" class="preview-penutup-wrapper" style="display: none;">
+                            <h4 class="preview-penutup-label">Penutup</h4>
+                            <p id="preview-penutup"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
