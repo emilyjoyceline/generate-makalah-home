@@ -284,7 +284,7 @@ function generateHTMLForPDF(data, logoBase64) {
                     margin: 0; padding: 0;
                 }
                 .cover {
-                    background: linear-gradient(135deg, #003d82 0%, #0056b3 100%);
+                    background: linear-gradient(135deg, #003378 0%, #004a9e 100%);
                     color: white; width: 100%; height: 297mm;
                     display: flex; flex-direction: column;
                     justify-content: center; align-items: center;
@@ -295,27 +295,27 @@ function generateHTMLForPDF(data, logoBase64) {
                 .title { font-size: 46px; font-weight: bold; margin: 15px 0; }
                 .subtitle { font-size: 22px; margin: 10px 0; letter-spacing: 2px; }
                 .date-box {
-                    background: white; color: #003d82;
+                    background: white; color: #003378;
                     padding: 20px 60px; margin-top: 60px;
                     font-size: 26px; font-weight: bold;
                     border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
                 }
                 .content-page { padding: 0; }
                 .section-title {
-                    background: #003d82; color: white; padding: 12px 20px;
+                    background: #003378; color: white; padding: 12px 20px;
                     margin: 30px 0 15px 0; font-size: 18px; font-weight: bold;
                     border-radius: 4px; page-break-after: avoid;
                 }
                 .verse {
                     background: #f0f4f8; padding: 15px 20px; margin: 15px 0;
-                    border-left: 5px solid #003d82; border-radius: 0 4px 4px 0;
+                    border-left: 5px solid #003378; border-radius: 0 4px 4px 0;
                     page-break-inside: avoid;
                 }
-                .verse-ref { font-weight: bold; color: #003d82; margin-bottom: 5px; }
+                .verse-ref { font-weight: bold; color: #003378; margin-bottom: 5px; }
                 .point { margin: 8px 0; padding-left: 20px; position: relative; }
-                .point:before { content: "•"; color: #003d82; font-weight: bold; font-size: 20px; position: absolute; left: 0; top: -4px; }
+                .point:before { content: "•"; color: #003378; font-weight: bold; font-size: 20px; position: absolute; left: 0; top: -4px; }
                 .closing-box {
-                    background: linear-gradient(135deg, #003d82 0%, #0056b3 100%);
+                    background: linear-gradient(135deg, #003378 0%, #004a9e 100%);
                     color: white; padding: 25px; text-align: center;
                     margin-top: 40px; font-style: italic;
                     border-radius: 12px; font-size: 16px; page-break-inside: avoid;
@@ -333,13 +333,13 @@ function generateHTMLForPDF(data, logoBase64) {
                 <div class="date-box">Minggu ${data.minggu}<br>${data.tanggal}</div>
             </div>
             <div class="content-page">
-                <h2 style="color:#003d82; text-align:center; margin-bottom:10px; font-size:18px; letter-spacing:1px;">${data.seri}</h2>
+                <h2 style="color:#003378; text-align:center; margin-bottom:10px; font-size:18px; letter-spacing:1px;">${data.seri}</h2>
                 <h1 style="text-align:center; margin-bottom:5px; font-size:28px;">${data.judul}</h1>
                 <p style="text-align:center; color:#666; margin-bottom:30px; font-style:italic;">${data.subjudul}</p>
-                ${data.pendahuluan ? `<h3 style="font-size:20px; margin-top:10px; color:#003d82;">Pendahuluan:</h3><p style="text-align:justify;">${data.pendahuluan}</p>` : ''}
+                ${data.pendahuluan ? `<h3 style="font-size:20px; margin-top:10px; color:#003378;">Pendahuluan:</h3><p style="text-align:justify;">${data.pendahuluan}</p>` : ''}
                 ${sectionsHTML}
                 ${data.penutup ? `
-                    <h3 style="font-size:20px; margin-top:30px; color:#003d82;">Penutup:</h3>
+                    <h3 style="font-size:20px; margin-top:30px; color:#003378;">Penutup:</h3>
                     <p style="text-align:justify;">${data.penutup}</p>
                     <div class="closing-box">Kiranya makalah HOME ini menolong kita bukan hanya memahami Yesus,<br>tetapi mengikuti jejak hidup-Nya. Tuhan Memberkati.</div>
                 ` : ''}
