@@ -284,7 +284,7 @@ function generateHTMLForPDF(data, logoBase64) {
                     margin: 0; padding: 0;
                 }
                 .cover {
-                    background: linear-gradient(135deg, #003378 0%, #004a9e 100%);
+                    background: linear-gradient(135deg, #003378 0%, #003378 100%);
                     color: white; width: 100%; height: 297mm;
                     display: flex; flex-direction: column;
                     justify-content: center; align-items: center;
@@ -315,7 +315,7 @@ function generateHTMLForPDF(data, logoBase64) {
                 .point { margin: 8px 0; padding-left: 20px; position: relative; }
                 .point:before { content: "•"; color: #003378; font-weight: bold; font-size: 20px; position: absolute; left: 0; top: -4px; }
                 .closing-box {
-                    background: linear-gradient(135deg, #003378 0%, #004a9e 100%);
+                    background: linear-gradient(135deg, #003378 0%, #003378 100%);
                     color: white; padding: 25px; text-align: center;
                     margin-top: 40px; font-style: italic;
                     border-radius: 12px; font-size: 16px; page-break-inside: avoid;
