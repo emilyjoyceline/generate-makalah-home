@@ -245,7 +245,7 @@ function renderSectionsPreview() {
 }
 
 function generatePDF() {
-const makalahData = {
+    const makalahData = {
         minggu: document.getElementById('minggu').value,
         tanggal: document.getElementById('tanggal').value,
         seri: document.getElementById('seri').value,
@@ -256,60 +256,25 @@ const makalahData = {
         penutup: document.getElementById('penutup').value
     };
     
-    if (!makalahData.judul) { 
-        alert('Mohon isi minimal Judul Makalah!'); 
-        return; 
-    }
+    if (!makalahData.judul) { alert('Mohon isi minimal Judul Makalah!'); return; }
     
-    // Tampilkan animasi loading di tombol
     const btn = document.querySelector('.btn-generate');
     const originalHTML = btn.innerHTML;
-    btn.innerHTML = '<svg class="icon animate-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><path d="M12 2v4"></path></svg> Memproses PDF...'; 
-    btn.disabled = true;
+    btn.innerHTML = 'Generating...'; btn.disabled = true;
     
     try {
-        // 1. Dapatkan struktur HTML
-        const htmlString = generateHTMLForPDF(makalahData);
+        const htmlContent = generateHTMLForPDF(makalahData);
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(htmlContent);
+        printWindow.document.close();
         
-        // 2. Buat container rahasia untuk di-render oleh html2pdf
-        const tempContainer = document.createElement('div');
-        tempContainer.style.position = 'absolute';
-        tempContainer.style.left = '-9999px'; // Sembunyikan dari layar
-        tempContainer.innerHTML = htmlString;
-        document.body.appendChild(tempContainer);
-        
-        // --- INI KUNCI PERBAIKANNYA ---
-        // Beri waktu jeda 1 detik agar browser selesai me-load gambar asset/home.jpeg ke memori 
-        // sebelum html2pdf "memfotonya".
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        
-        // 3. Konfigurasi PDF
-        const opt = {
-            margin:       0, 
-            filename:     `HOME_Minggu_${makalahData.minggu}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true }, 
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            pagebreak:    { mode: ['css', 'legacy'] }
-        };
-        
-        // 4. Proses render & otomatis pop-up download
-        await html2pdf().set(opt).from(tempContainer.firstElementChild).save();
-        
-        // 5. Bersihkan sampah container
-        document.body.removeChild(tempContainer);
-        
-        // Kembalikan tombol seperti semula
-        btn.innerHTML = originalHTML; 
-        btn.disabled = false;
-        
-        showNotification('✅ PDF berhasil di-download!', 'success');
-        
+        setTimeout(() => {
+            printWindow.print();
+            btn.innerHTML = originalHTML; btn.disabled = false;
+        }, 500);
     } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('Terjadi kesalahan saat generate PDF. Pastikan file logo bisa diakses.');
-        btn.innerHTML = originalHTML; 
-        btn.disabled = false;
+        alert('Terjadi kesalahan saat generate PDF.');
+        btn.innerHTML = originalHTML; btn.disabled = false;
     }
 }
 
