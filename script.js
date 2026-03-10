@@ -341,7 +341,9 @@ function generateHTMLForPDF(data, logoBase64) {
                 ${data.penutup ? `
                     <h3 style="font-size:20px; margin-top:30px; color:#003378;">Penutup:</h3>
                     <p style="text-align:justify;">${data.penutup}</p>
-                    <div class="closing-box">Kiranya makalah HOME ini menolong kita bukan hanya memahami Yesus,<br>tetapi mengikuti jejak hidup-Nya. Tuhan Memberkati.</div>
+                    <div class="closing-box">
+                    Jadilah surat Kristus yang terbuka, supaya dunia membaca <br>Allah melalui hidupmu.
+                    </div>
                 ` : ''}
             </div>
         </body>
