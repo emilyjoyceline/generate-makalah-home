@@ -342,7 +342,7 @@ function generateHTMLForPDF(data, logoBase64) {
                     <h3 style="font-size:20px; margin-top:30px; color:#003378;">Penutup:</h3>
                     <p style="text-align:justify;">${data.penutup}</p>
                     <div class="closing-box">
-                    Jadilah surat Kristus yang terbuka, supaya dunia membaca <br>Allah melalui hidupmu.
+                    Penundukan Yesus kepada kehendak Allah mencapai tingkat total, bukan sekedar ketaatan, tetapi penyerahan diri sepenuhnya, <br> bahkan sampai mengosongkan kehendak-Nya sendiri demi kehendak Bapa
                     </div>
                 ` : ''}
             </div>
