@@ -1,8 +1,31 @@
+// Dark Mode
+function toggleDarkMode() {
+    const body = document.body;
+    body.classList.toggle('dark');
+    const isDark = body.classList.contains('dark');
+    document.getElementById('toggleIcon').textContent = isDark ? '☀️' : '🌙';
+    localStorage.setItem('darkMode', isDark ? 'on' : 'off');
+    // Update inline styles on section editor cards
+    document.querySelectorAll('#sections-editor-container > div').forEach(div => {
+        div.style.background = isDark ? '#1e293b' : '#f8fafc';
+        div.style.borderColor = isDark ? '#475569' : '#e2e8f0';
+    });
+}
+
+// Apply saved dark mode preference on load
+(function() {
+    if (localStorage.getItem('darkMode') === 'on') {
+        document.body.classList.add('dark');
+        const icon = document.getElementById('toggleIcon');
+        if (icon) icon.textContent = '☀️';
+    }
+})();
+
 // Global state
 let sections = [];
 
 // Initialize
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Set up event listeners for real-time preview
     document.getElementById('minggu').addEventListener('input', updatePreview);
     document.getElementById('tanggal').addEventListener('input', updatePreview);
@@ -11,12 +34,13 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('subjudul').addEventListener('input', updatePreview);
     document.getElementById('pendahuluan').addEventListener('input', updatePreview);
     document.getElementById('penutup').addEventListener('input', updatePreview);
-    
+    document.getElementById('closingBox').addEventListener('input', updatePreview);
+
     // Inisialisasi 1 section kosong jika tidak ada data
-    if(sections.length === 0) {
+    if (sections.length === 0) {
         addNewSection();
     }
-    
+
     updatePreview();
 });
 
@@ -24,10 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
 function switchTab(tabName) {
     const tabs = document.querySelectorAll('.tab-button');
     const contents = document.querySelectorAll('.tab-content');
-    
+
     tabs.forEach(tab => tab.classList.remove('active'));
     contents.forEach(content => content.classList.remove('active'));
-    
+
     document.getElementById(`tab-${tabName}`).classList.add('active');
     document.getElementById(`content-${tabName}`).classList.add('active');
 }
@@ -35,24 +59,24 @@ function switchTab(tabName) {
 // Parse JSON dari Gemini
 function parseWithAI() {
     let fullText = document.getElementById('full-text-input').value;
-    
+
     if (!fullText.trim()) {
         alert('Mohon paste hasil JSON dari Gemini terlebih dahulu!');
         return;
     }
-    
+
     try {
         let jsonText = fullText.replace(/```json\n?/gi, '').replace(/```\n?/g, '').trim();
         const firstBrace = jsonText.indexOf('{');
         const lastBrace = jsonText.lastIndexOf('}');
-        
+
         if (firstBrace === -1 || lastBrace === -1) {
             throw new Error("Format JSON tidak ditemukan.");
         }
-        
+
         jsonText = jsonText.substring(firstBrace, lastBrace + 1);
         const parsedData = JSON.parse(jsonText);
-        
+
         document.getElementById('minggu').value = parsedData.minggu || '';
         document.getElementById('tanggal').value = parsedData.tanggal || '';
         document.getElementById('seri').value = parsedData.seri || 'SERIAL MONOTEISME ALKITABIAH';
@@ -60,15 +84,16 @@ function parseWithAI() {
         document.getElementById('subjudul').value = parsedData.subjudul || '';
         document.getElementById('pendahuluan').value = parsedData.pendahuluan || '';
         document.getElementById('penutup').value = parsedData.penutup || '';
-        
+        document.getElementById('closingBox').value = parsedData.closingBox || '';
+
         // Memuat sections dan me-render form editor-nya
         sections = parsedData.sections || [];
-        renderSectionsEditor(); 
-        
+        renderSectionsEditor();
+
         document.getElementById('tab-manual').click();
         updatePreview();
         showNotification('✅ Data berhasil dimuat ke dalam form!', 'success');
-        
+
     } catch (error) {
         console.error('Error parsing JSON:', error);
         alert('Terjadi kesalahan! Pastikan teks yang di-paste adalah format JSON yang valid.\n\nError: ' + error.message);
@@ -100,14 +125,15 @@ function showNotification(message, type = 'info') {
 function renderSectionsEditor() {
     const container = document.getElementById('sections-editor-container');
     container.innerHTML = '';
-    
+
     sections.forEach((section, sIndex) => {
         const sectionDiv = document.createElement('div');
-        sectionDiv.style.cssText = 'background: #f8fafc; border: 1px solid #e2e8f0; padding: 20px; border-radius: 8px; margin-bottom: 20px; position: relative;';
-        
+        const isDark = document.body.classList.contains('dark');
+        sectionDiv.style.cssText = `background: ${isDark ? '#1e293b' : '#f8fafc'}; border: 1px solid ${isDark ? '#475569' : '#e2e8f0'}; padding: 20px; border-radius: 8px; margin-bottom: 20px; position: relative;`;
+
         // HTML untuk Ayat
         let versesHTML = '';
-        if(section.verses) {
+        if (section.verses) {
             section.verses.forEach((verse, vIndex) => {
                 versesHTML += `
                     <div class="verse-item" style="background: white; border: 1px solid #cbd5e1;">
@@ -124,7 +150,7 @@ function renderSectionsEditor() {
 
         // HTML untuk Poin
         let pointsHTML = '';
-        if(section.points) {
+        if (section.points) {
             section.points.forEach((point, pIndex) => {
                 pointsHTML += `
                     <div class="point-item" style="display:flex; gap:8px; margin-bottom:8px;">
@@ -169,18 +195,18 @@ function renderSectionsEditor() {
 }
 
 // Fungsi Edit State Data
-function addNewSection() { sections.push({title:'', content:'', verses:[], points:[]}); renderSectionsEditor(); updatePreview(); }
+function addNewSection() { sections.push({ title: '', content: '', verses: [], points: [] }); renderSectionsEditor(); updatePreview(); }
 function removeSection(sIndex) { sections.splice(sIndex, 1); renderSectionsEditor(); updatePreview(); }
 
 function updateSectionTitle(sIndex, val) { sections[sIndex].title = val; updatePreview(); }
 function updateSectionContent(sIndex, val) { sections[sIndex].content = val; updatePreview(); }
 
-function addVerse(sIndex) { if(!sections[sIndex].verses) sections[sIndex].verses = []; sections[sIndex].verses.push({ref:'', text:''}); renderSectionsEditor(); }
+function addVerse(sIndex) { if (!sections[sIndex].verses) sections[sIndex].verses = []; sections[sIndex].verses.push({ ref: '', text: '' }); renderSectionsEditor(); }
 function removeVerse(sIndex, vIndex) { sections[sIndex].verses.splice(vIndex, 1); renderSectionsEditor(); updatePreview(); }
 function updateVerseRef(sIndex, vIndex, val) { sections[sIndex].verses[vIndex].ref = val; updatePreview(); }
 function updateVerseText(sIndex, vIndex, val) { sections[sIndex].verses[vIndex].text = val; updatePreview(); }
 
-function addPoint(sIndex) { if(!sections[sIndex].points) sections[sIndex].points = []; sections[sIndex].points.push(''); renderSectionsEditor(); }
+function addPoint(sIndex) { if (!sections[sIndex].points) sections[sIndex].points = []; sections[sIndex].points.push(''); renderSectionsEditor(); }
 function removePoint(sIndex, pIndex) { sections[sIndex].points.splice(pIndex, 1); renderSectionsEditor(); updatePreview(); }
 function updatePoint(sIndex, pIndex, val) { sections[sIndex].points[pIndex] = val; updatePreview(); }
 
@@ -191,49 +217,59 @@ function updatePoint(sIndex, pIndex, val) { sections[sIndex].points[pIndex] = va
 function updatePreview() {
     document.getElementById('preview-minggu').textContent = `Minggu ${document.getElementById('minggu').value}`;
     document.getElementById('preview-tanggal').textContent = document.getElementById('tanggal').value;
-    
+
     const elements = ['seri', 'judul', 'subjudul', 'pendahuluan', 'penutup'];
     elements.forEach(id => {
         const val = document.getElementById(id).value;
         const el = document.getElementById('preview-' + id);
-        if(id === 'pendahuluan' || id === 'penutup') {
+        if (id === 'pendahuluan' || id === 'penutup') {
             const section = document.getElementById(`preview-${id}-section`);
-            if(val) { el.textContent = val; section.style.display = 'block'; }
+            if (val) { el.textContent = val; section.style.display = 'block'; }
             else { section.style.display = 'none'; }
         } else {
-            if(val) { el.textContent = val; el.style.display = 'block'; }
+            if (val) { el.textContent = val; el.style.display = 'block'; }
             else { el.style.display = 'none'; }
         }
     });
+
+    // Update closing box preview
+    const closingBoxVal = document.getElementById('closingBox').value;
+    const closingBoxPreview = document.getElementById('preview-closingBox');
+    if (closingBoxVal) {
+        closingBoxPreview.textContent = closingBoxVal;
+        closingBoxPreview.style.display = 'block';
+    } else {
+        closingBoxPreview.style.display = 'none';
+    }
     renderSectionsPreview();
 }
 
 function renderSectionsPreview() {
     const container = document.getElementById('preview-sections');
     container.innerHTML = '';
-    
+
     sections.forEach((section, index) => {
         const sectionDiv = document.createElement('div');
         sectionDiv.className = 'preview-section-item';
-        
+
         let versesHTML = '';
-        if(section.verses) {
+        if (section.verses) {
             section.verses.forEach(verse => {
                 if (verse.ref || verse.text) {
                     versesHTML += `<div class="preview-verse"><div class="preview-verse-ref">📖 ${verse.ref}</div><p class="preview-verse-text">"${verse.text}"</p></div>`;
                 }
             });
         }
-        
+
         let pointsHTML = '';
-        if(section.points) {
+        if (section.points) {
             const validPoints = section.points.filter(p => p.trim() !== '');
             if (validPoints.length > 0) {
                 pointsHTML = '<div class="preview-points-label">➡ Poin penting:</div>';
                 validPoints.forEach(point => { pointsHTML += `<div class="preview-point">• ${point}</div>`; });
             }
         }
-        
+
         sectionDiv.innerHTML = `
             <div class="preview-section-title">${index + 1}. ${section.title}</div>
             ${versesHTML}
@@ -253,21 +289,22 @@ function generatePDF() {
         subjudul: document.getElementById('subjudul').value,
         pendahuluan: document.getElementById('pendahuluan').value,
         sections: sections,
-        penutup: document.getElementById('penutup').value
+        penutup: document.getElementById('penutup').value,
+        closingBox: document.getElementById('closingBox').value
     };
-    
+
     if (!makalahData.judul) { alert('Mohon isi minimal Judul Makalah!'); return; }
-    
+
     const btn = document.querySelector('.btn-generate');
     const originalHTML = btn.innerHTML;
     btn.innerHTML = 'Generating...'; btn.disabled = true;
-    
+
     try {
         const htmlContent = generateHTMLForPDF(makalahData);
         const printWindow = window.open('', '_blank');
         printWindow.document.write(htmlContent);
         printWindow.document.close();
-        
+
         setTimeout(() => {
             printWindow.print();
             btn.innerHTML = originalHTML; btn.disabled = false;
@@ -284,22 +321,22 @@ function generateHTMLForPDF(data) {
     let sectionsHTML = '';
     data.sections.forEach((section, index) => {
         let versesHTML = '';
-        if(section.verses) {
+        if (section.verses) {
             section.verses.forEach(verse => {
                 // Kotak ayat diberi 'avoid' agar satu kotak ayat tidak terpotong dua, tapi teks penjelasannya dibiarkan mengalir alami
                 if (verse.ref || verse.text) versesHTML += `<div class="verse"><div class="verse-ref">📖 ${verse.ref}</div><p style="margin:0;">"${verse.text}"</p></div>`;
             });
         }
-        
+
         let pointsHTML = '';
-        if(section.points) {
+        if (section.points) {
             const validPoints = section.points.filter(p => p.trim() !== '');
             if (validPoints.length > 0) {
                 pointsHTML = '<div style="font-weight: bold; margin: 15px 0 10px 0;">➡ Poin penting:</div>';
                 validPoints.forEach(point => { pointsHTML += `<div class="point">${point}</div>`; });
             }
         }
-        
+
         // Teks kini dibiarkan mengalir alami tanpa pembungkus page-break-inside
         sectionsHTML += `
             <div class="section-title">${index + 1}. ${section.title}</div>
@@ -308,7 +345,7 @@ function generateHTMLForPDF(data) {
             ${pointsHTML}
         `;
     });
-    
+
     return `
         <!DOCTYPE html>
         <html>
@@ -427,9 +464,7 @@ function generateHTMLForPDF(data) {
                 ${data.penutup ? `
                     <h3 style="font-size: 20px; margin-top: 30px; color: #003d82;">Penutup:</h3>
                     <p style="text-align: justify;">${data.penutup}</p>
-                    <div class="closing-box">
-                        Kiranya makalah HOME ini menolong kita bukan hanya memahami Yesus,<br>tetapi mengikuti jejak hidup-Nya. Tuhan Memberkati.
-                    </div>
+                    ${data.closingBox ? `<div class="closing-box">${data.closingBox}</div>` : ''}
                 ` : ''}
             </div>
         </body>

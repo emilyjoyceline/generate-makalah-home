@@ -1,3 +1,35 @@
+/* =========================================
+   CSS CUSTOM PROPERTIES (LIGHT MODE DEFAULT)
+   ========================================= */
+:root {
+    --bg-body: linear-gradient(135deg, #EBF4FF 0%, #E0E7FF 100%);
+    --bg-card: #ffffff;
+    --bg-input: #ffffff;
+    --bg-section-editor: #f8fafc;
+    --bg-verse-item: #EBF4FF;
+    --bg-tabs: #ffffff;
+    --bg-ai-info: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+
+    --text-primary: #1f2937;
+    --text-secondary: #374151;
+    --text-muted: #6b7280;
+    --text-label: #374151;
+
+    --border-color: #d1d5db;
+    --border-section: #e2e8f0;
+    --border-card: transparent;
+
+    --preview-section-border: #e5e7eb;
+    --preview-verse-bg: #EBF4FF;
+
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.1);
+    --shadow-header: 0 10px 30px rgba(0, 0, 0, 0.2);
+
+    --brand-primary: #003378;
+    --brand-secondary: #003d82;
+    --brand-accent: #2563eb;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -6,9 +38,76 @@
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #EBF4FF 0%, #E0E7FF 100%);
+    background: var(--bg-body);
     min-height: 100vh;
     padding: 24px;
+    color: var(--text-primary);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* =========================================
+   DARK MODE OVERRIDES
+   ========================================= */
+body.dark {
+    --bg-body: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+    --bg-card: #1e293b;
+    --bg-input: #334155;
+    --bg-section-editor: #1e293b;
+    --bg-verse-item: #334155;
+    --bg-tabs: #1e293b;
+    --bg-ai-info: linear-gradient(135deg, #1e293b 0%, #1e3a5f 100%);
+
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --text-label: #cbd5e1;
+
+    --border-color: #475569;
+    --border-section: #475569;
+    --border-card: 1px solid #334155;
+
+    --preview-section-border: #475569;
+    --preview-verse-bg: #334155;
+
+    --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.3);
+    --shadow-header: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+    --brand-primary: #93c5fd;
+    --brand-secondary: #60a5fa;
+    --brand-accent: #3b82f6;
+}
+
+/* =========================================
+   DARK MODE TOGGLE BUTTON
+   ========================================= */
+.dark-mode-toggle {
+    margin-left: auto;
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.dark-mode-toggle:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.1);
+}
+
+.toggle-icon {
+    font-size: 20px;
+    transition: transform 0.4s ease;
+    display: block;
+}
+
+.dark-mode-toggle:hover .toggle-icon {
+    transform: rotate(25deg);
 }
 
 .container {
@@ -21,7 +120,7 @@ body {
     background: linear-gradient(135deg, #003378 0%, #1e40af 100%);
     color: white;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow-header);
     padding: 32px;
     margin-bottom: 32px;
 }
@@ -65,10 +164,11 @@ body {
     display: flex;
     gap: 8px;
     margin-bottom: 24px;
-    background: white;
+    background: var(--bg-tabs);
     padding: 8px;
     border-radius: 12px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: background 0.3s ease;
 }
 
 .tab-button {
@@ -79,14 +179,14 @@ body {
     border-radius: 8px;
     font-size: 14px;
     font-weight: 500;
-    color: #6b7280;
+    color: var(--text-muted);
     cursor: pointer;
     transition: all 0.2s;
 }
 
 .tab-button:hover {
-    background: #f3f4f6;
-    color: #1f2937;
+    background: var(--bg-verse-item);
+    color: var(--text-primary);
 }
 
 .tab-button.active {
@@ -105,22 +205,23 @@ body {
 
 /* AI Parser specific styles */
 .ai-info {
-    background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
-    border-left: 4px solid #2563eb;
+    background: var(--bg-ai-info);
+    border-left: 4px solid var(--brand-accent);
     padding: 16px;
     border-radius: 8px;
     margin-bottom: 20px;
+    transition: background 0.3s ease;
 }
 
 .ai-info p {
     margin-bottom: 8px;
-    color: #1e40af;
+    color: var(--brand-accent);
     font-weight: 600;
 }
 
 .ai-info ol {
     margin-left: 20px;
-    color: #003378;
+    color: var(--brand-primary);
 }
 
 .ai-info li {
@@ -159,17 +260,18 @@ body {
 
 /* Card */
 .card {
-    background: white;
+    background: var(--bg-card);
     border-radius: 12px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-card);
     padding: 24px;
     margin-bottom: 24px;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-title {
     font-size: 24px;
     font-weight: bold;
-    color: #003378;
+    color: var(--brand-primary);
     margin-bottom: 16px;
     display: flex;
     align-items: center;
@@ -198,39 +300,43 @@ body {
     display: block;
     font-size: 14px;
     font-weight: 500;
-    color: #374151;
+    color: var(--text-label);
     margin-bottom: 4px;
 }
 
 .form-input {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 14px;
+    background: var(--bg-input);
+    color: var(--text-primary);
     transition: all 0.2s;
 }
 
 .form-input:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: var(--brand-accent);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .form-textarea {
     width: 100%;
     padding: 10px 12px;
-    border: 1px solid #d1d5db;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
     font-size: 14px;
     font-family: inherit;
     resize: vertical;
+    background: var(--bg-input);
+    color: var(--text-primary);
     transition: all 0.2s;
 }
 
 .form-textarea:focus {
     outline: none;
-    border-color: #2563eb;
+    border-color: var(--brand-accent);
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
@@ -238,8 +344,9 @@ body {
 .verse-item, .point-item {
     margin-bottom: 12px;
     padding: 12px;
-    background: #EBF4FF;
+    background: var(--bg-verse-item);
     border-radius: 6px;
+    transition: background 0.3s ease;
 }
 
 .verse-item input,
@@ -256,7 +363,7 @@ body {
 
 /* Buttons */
 .btn-add-verse {
-    color: #2563eb;
+    color: var(--brand-accent);
     font-size: 14px;
     font-weight: 500;
     background: none;
@@ -267,12 +374,12 @@ body {
 }
 
 .btn-add-verse:hover {
-    color: #1e40af;
+    color: var(--brand-primary);
 }
 
 .btn-add-section {
     width: 100%;
-    background: #2563eb;
+    background: var(--brand-accent);
     color: white;
     border: none;
     padding: 12px 16px;
@@ -288,7 +395,7 @@ body {
 }
 
 .btn-add-section:hover {
-    background: #1e40af;
+    background: var(--brand-primary);
 }
 
 .btn-generate {
@@ -391,7 +498,7 @@ body {
 
 .preview-cover-date {
     background: white;
-    color: #003378;
+    color: var(--brand-primary);
     padding: 12px 24px;
     border-radius: 8px;
     display: inline-block;
@@ -401,7 +508,7 @@ body {
 /* Preview Content */
 .preview-seri {
     text-align: center;
-    color: #003378;
+    color: var(--brand-primary);
     font-weight: 600;
     font-size: 14px;
     margin-bottom: 8px;
@@ -411,7 +518,7 @@ body {
     font-size: 24px;
     font-weight: bold;
     text-align: center;
-    color: #1f2937;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
@@ -423,19 +530,19 @@ body {
 }
 
 .preview-pendahuluan {
-    border-left: 4px solid #2563eb;
+    border-left: 4px solid var(--brand-accent);
     padding-left: 16px;
     margin-bottom: 16px;
 }
 
 .preview-section-label {
     font-weight: bold;
-    color: #1f2937;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .preview-pendahuluan p {
-    color: #374151;
+    color: var(--text-secondary);
     font-size: 14px;
     line-height: 1.6;
     text-align: justify;
@@ -443,7 +550,7 @@ body {
 
 /* Preview Sections */
 .preview-section-item {
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--preview-section-border);
     border-radius: 8px;
     padding: 16px;
     margin-bottom: 16px;
@@ -451,7 +558,7 @@ body {
 }
 
 .preview-section-title {
-    background: #003378;
+    background: var(--brand-primary);
     color: white;
     padding: 8px 16px;
     border-radius: 6px;
@@ -460,25 +567,26 @@ body {
 }
 
 .preview-verse {
-    background: #EBF4FF;
+    background: var(--preview-verse-bg);
     padding: 12px;
     border-radius: 6px;
     margin-bottom: 8px;
     font-size: 14px;
+    transition: background 0.3s ease;
 }
 
 .preview-verse-ref {
     font-weight: bold;
-    color: #003378;
+    color: var(--brand-primary);
 }
 
 .preview-verse-text {
-    color: #374151;
+    color: var(--text-secondary);
     font-style: italic;
 }
 
 .preview-section-content {
-    color: #374151;
+    color: var(--text-secondary);
     font-size: 14px;
     line-height: 1.6;
     text-align: justify;
@@ -487,20 +595,20 @@ body {
 
 .preview-points-label {
     font-weight: 600;
-    color: #1f2937;
+    color: var(--text-primary);
     margin-bottom: 8px;
 }
 
 .preview-point {
     font-size: 14px;
-    color: #374151;
+    color: var(--text-secondary);
     margin-left: 16px;
     margin-bottom: 4px;
 }
 
 /* Preview Penutup */
 .preview-penutup-wrapper {
-    background: linear-gradient(135deg, #003378 0%, #003378 100%);
+    background: linear-gradient(135deg, var(--brand-secondary) 0%, var(--brand-primary) 100%);
     color: white;
     padding: 24px;
     border-radius: 12px;
@@ -514,6 +622,18 @@ body {
 }
 
 .preview-penutup-wrapper p {
+    font-size: 14px;
+    line-height: 1.6;
+    text-align: center;
+    font-style: italic;
+}
+
+.preview-closing-box {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 16px;
+    border-radius: 8px;
+    margin-top: 12px;
     font-size: 14px;
     line-height: 1.6;
     text-align: center;

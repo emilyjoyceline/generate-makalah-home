@@ -15,6 +15,9 @@
                     <h1 class="header-title">Generator Makalah HOME</h1>
                     <p class="header-subtitle">Home GSKI Rehobot Surabaya</p>
                 </div>
+                <button class="dark-mode-toggle" id="darkModeToggle" onclick="toggleDarkMode()" title="Toggle Dark Mode">
+                    <span class="toggle-icon" id="toggleIcon">🌙</span>
+                </button>
             </div>
         </div>
 
@@ -146,6 +149,11 @@ Contoh:
                     <div class="card">
                         <h2 class="card-title">Penutup</h2>
                         <textarea id="penutup" class="form-textarea" rows="6" placeholder="Tuliskan penutup makalah..."></textarea>
+                        
+                        <div class="form-group" style="margin-top: 16px;">
+                            <label class="form-label">Closing Box (Kutipan Penutup)</label>
+                            <textarea id="closingBox" class="form-textarea" rows="4" placeholder="Tuliskan kutipan/kalimat penutup untuk kotak biru..."></textarea>
+                        </div>
                     </div>
                 </div>
 
@@ -187,6 +195,7 @@ Contoh:
                         <div id="preview-penutup-section" class="preview-penutup-wrapper" style="display: none;">
                             <h4 class="preview-penutup-label">Penutup</h4>
                             <p id="preview-penutup"></p>
+                            <div id="preview-closingBox" class="preview-closing-box" style="display: none;"></div>
                         </div>
                     </div>
                 </div>
