@@ -411,7 +411,9 @@ function generateHTMLForPDF(data, logoBase64) {
                 ${data.penutup ? `
                     <h3 style="font-size: 20px; margin-top: 30px; color: #003d82;">Penutup:</h3>
                     <p style="text-align: justify;">${data.penutup}</p>
-                    
+                    <div class="closing-box">
+                        Kiranya makalah HOME ini menolong kita bukan hanya memahami Yesus,<br>tetapi mengikuti jejak hidup-Nya. Tuhan Memberkati.
+                    </div>
                 ` : ''}
             </div>
         </body>
